@@ -1,0 +1,145 @@
+<script>
+    let buah = ["Apel", "Anggur", "Jeruk"]; //Jenis-jenis buah
+    let harga = [10000, 15000, 20000]; //Harga tiap buah
+    let stok = [10, 20, 30]; //Stok buah
+    let jumlah = [0, 0, 0]; //Input buah yang ingin dibeli
+    let total = [0, 0, 0]; //Perkalian input dengan harga
+    var Mainmenu = true; //Kondisi loop menu
+    var tambah = true; //Kondisi tambah buah
+    var del = true; //Kondisi hapus buah
+    var con = true; //Kondisi loop input buah 0 semua
+    var cek = true; //Kondisi loop input melebihi stok / tidak input integer
+    var menu;
+    var belanja = ''; //List buah yang dibeli
+    var sub = 0; //Pengecekan jika input 0 semua
+    var final = 0; //Harga akhir yg harus dibayar
+    var money = true; //Kondisi pembayaran kurang atau lebih
+
+    do{
+        menu = parseInt(prompt("Apa yang anda ingin lakukan?\n\n"+
+                     "0. Tampilkan daftar buah\n"+
+                     "1. Tambah buah\n"+
+                     "2. Hapus buah\n"+
+                     "3. Belanja buah"));
+
+        if(menu === 0){
+            var list = "Daftar buah:\n\n";
+            var long = buah.length;
+            for(var x = 0; x < long; x++){
+                list += x + ". " + buah[x] + " | stok: " + stok[x] + " | harga: Rp" + harga[x] + "\n";
+            }
+            alert(list);
+        }
+        else if(menu === 1){
+            do{
+                var buah2 = prompt("Nama buah yang baru:");
+                if(buah2 == ""){
+                    alert("Jangan kosongkan input!");
+                    tambah = true;
+                }
+                else{
+                    tambah = false;
+                }
+            }while(tambah)
+            do{
+                var stok2 = prompt("Stok dari buah " + buah2 + ":");
+                if(stok2 == "" || stok2 == 0 || stok2 < 0){
+                    alert("Berikan input stok yang sesuai");
+                    tambah = true;
+                }
+                else{
+                    tambah = false;
+                }
+            }while(tambah)
+            do{
+                var harga2 = prompt("Harga dari buah " + buah2 + ":");
+                if(harga2 == "" || harga2 == 0 || harga2 < 0){
+                    alert("Berikan input harga yang sesuai");
+                    tambah = true;
+                }
+                else{
+                    tambah = false;
+                }
+            }while(tambah)
+            buah.push(buah2);
+            stok.push(stok2);
+            harga.push(harga2);
+            alert("Produk " + buah2 + " berhasil ditambahkan");
+        }
+        else if(menu === 2){
+            do{
+                var hapus = parseInt(prompt("Buah mana yang ingin dihapus?\n" + list));
+                if(hapus == "" || hapus < 0 || hapus > (buah.length-1)){
+                    alert("Tentukan buah mana yang ingin dihapus");
+                    del = true;
+                }
+                else{
+                    del = false;
+                }
+            }while(del)
+            buah.splice(hapus,1);
+            alert("Produk berhasil dihapus");
+        }
+        else if(menu === 3){
+            do{
+                for(var i = 0; i < buah.length; i++){
+                    do{
+                        jumlah[i] = prompt("Masukkan jumlah buah " + buah[i] + " yang ingin dibeli:");
+                        if(jumlah[i] == '' || jumlah[i] < 0 || jumlah[i] > stok[i]){
+                            alert("Masukkan jumlah buah yang sesuai!\nStok buah " + buah[i] + 
+                            " saat ini adalah " + stok[i]);
+                            cek = true;
+                        }
+                        else{
+                            cek = false;
+                        } 
+                    }while(cek)
+                    sub += parseInt(jumlah[i]);
+                }
+                if(sub === 0){
+                    alert("Isilah dengan benar!");
+                    con = true;
+                }
+                else{
+                    con = false;
+                }
+            }while(con)
+
+            for(var res = 0; res < buah.length; res++){
+                total[res] = jumlah[res] * harga[res];
+                final += total[res];
+                belanja += (res+1) + ". " + buah[res] + ": " + jumlah[res] + " x Rp" + harga[res] + " = Rp" + total[res] +"\n";
+            }
+            alert(
+                "Detail pembelanjaan :\n"+ belanja +
+                "\n Total : Rp" + final
+            )
+
+            do{
+                var bayar = prompt("Total yang perlu dibayar: " + final + "\n Masukkan jumlah uang anda :");
+                var selisih = (final-bayar);
+                if(bayar<final){
+                    alert("Transaksi gagal, \nUang anda kurang Rp"+ selisih);
+                    money = true;
+                }
+                else if(bayar>final){
+                    alert("Transaksi berhasil,\nUang kembalian anda : Rp" + Math.abs(selisih));
+                    money = false;
+                }
+                else if(bayar==final){
+                    alert("Transaksi berhasil,\nUang anda pas!");
+                    money = false;
+                }
+                else{
+                    alert("Tolong berikan uang dengan jumlah yang sesuai.")
+                    money = true;
+                }
+            }while(money)
+            alert("Terima kasih sudah berbelanja di tempat kami");
+        } //Penutup menu == 3
+
+        else{
+            alert("Pilihlah sesuai menu yang tertera!");
+        } Mainmenu = confirm("Kembali ke menu utama?");
+    }while(Mainmenu)
+</script>
